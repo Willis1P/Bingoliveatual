@@ -1,42 +1,56 @@
 import React from 'react';
-import { useModal } from '../hooks/useModal';
+import { Link } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
 
-export const Navbar: React.FC = () => {
-  const { openModal } = useModal();
+export function Navbar() {
+  const { user } = useAuth();
 
   return (
-    <nav className="bg-gradient-to-r from-purple-900 to-blue-900 py-4 px-6 shadow-lg">
-      <div className="container mx-auto flex justify-between items-center">
-        <div className="flex items-center space-x-2">
-          <i className="fas fa-dice text-2xl text-pink-500"></i>
-          <span className="text-2xl font-bold text-white">Bingo<span className="text-pink-500">Live+</span></span>
-        </div>
-        
-        <div className="hidden md:flex items-center space-x-6">
-          <a href="#home" className="text-white hover:text-pink-400 transition">Início</a>
-          <a href="#games" className="text-white hover:text-pink-400 transition">Jogos</a>
-          <a href="#how-to-play" className="text-white hover:text-pink-400 transition">Como Jogar</a>
-          <a href="#prizes" className="text-white hover:text-pink-400 transition">Prêmios</a>
-        </div>
-        
-        <div className="flex items-center space-x-4">
-          <button 
-            onClick={() => openModal('login')}
-            className="bg-transparent border border-white text-white px-4 py-2 rounded-lg hover:bg-white hover:text-purple-900 transition"
-          >
-            Entrar
-          </button>
-          <button 
-            onClick={() => openModal('register')}
-            className="bg-pink-600 text-white px-4 py-2 rounded-lg hover:bg-pink-700 transition"
-          >
-            Cadastre-se
-          </button>
-          <button className="md:hidden text-white">
-            <i className="fas fa-bars text-xl"></i>
-          </button>
+    <nav className="bg-transparent py-4">
+      <div className="container mx-auto px-6">
+        <div className="flex items-center justify-between">
+          <Link to="/" className="flex items-center">
+            <span className="text-2xl font-bold text-white">
+              Bingo<span className="text-pink-500">Live</span>+
+            </span>
+          </Link>
+
+          <div className="hidden md:flex items-center space-x-8">
+            <Link to="/" className="text-white hover:text-pink-500 transition">
+              Início
+            </Link>
+            <Link to="/games" className="text-white hover:text-pink-500 transition">
+              Jogos
+            </Link>
+            <Link to="/how-to-play" className="text-white hover:text-pink-500 transition">
+              Como Jogar
+            </Link>
+            <Link to="/prizes" className="text-white hover:text-pink-500 transition">
+              Prêmios
+            </Link>
+          </div>
+
+          <div className="flex items-center space-x-4">
+            {user ? (
+              <Link
+                to="/profile"
+                className="bg-pink-600 text-white px-6 py-2 rounded hover:bg-pink-700 transition"
+              >
+                Meu Perfil
+              </Link>
+            ) : (
+              <>
+                <button className="text-white hover:text-pink-500 transition">
+                  Entrar
+                </button>
+                <button className="bg-pink-600 text-white px-6 py-2 rounded hover:bg-pink-700 transition">
+                  Cadastre-se
+                </button>
+              </>
+            )}
+          </div>
         </div>
       </div>
     </nav>
   );
-};
+}
